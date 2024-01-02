@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epic 2D Roblox Game</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+    button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+<button onclick="resetGame()">Reset Game</button>
+
+<script>
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let player = {
+    x: canvas.width / 2,
+    y: canvas.height / 2,
+    size: 50,
+    speed: 5,
+    velocityX: 0,
+    velocityY: 0,
+  };
+
+  function drawPlayer() {
+    // Change color constantly
+    const hue = (Date.now() / 10) % 360;
+    ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+
+    ctx.fillRect(player.x - player.size / 2, player.y - player.size / 2, player.size, player.size);
+  }
+
+  function update() {
+    // Handle player movement
+    player.x += player.velocityX;
+    player.y += player.velocityY;
+
+    // Draw player
+    drawPlayer();
+
+    requestAnimationFrame(update);
+  }
+
+  function resetGame() {
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Redraw the player and the button
+    drawPlayer();
+    drawButton();
+  }
+
+  function drawButton() {
+    // Redraw the button
+    ctx.fillStyle = "white";
+    ctx.fillRect(10, 10, 150, 40);
+    ctx.fillStyle = "black";
+    ctx.font = "16px Arial";
+    ctx.fillText("Reset Game", 20, 35);
+  }
+
+  // Keyboard input
+  window.addEventListener("keydown", (e) => {
+    switch (e.key) {
+      case "w":
+        player.velocityY = -player.speed;
+        break;
+      case "a":
+        player.velocityX = -player.speed;
+        break;
+      case "s":
+        player.velocityY = player.speed;
+        break;
+      case "d":
+        player.velocityX = player.speed;
+        break;
+      case "ArrowUp":
+      case "ArrowDown":
+      case "ArrowLeft":
+      case "ArrowRight":
+        // Rick Roll on arrow key press
+        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        break;
+    }
+  });
+
+  window.addEventListener("keyup", (e) => {
+    // Stop player movement when key is released
+    player.velocityX = 0;
+    player.velocityY = 0;
+  });
+
+  // Initial setup
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // Start the game loop
+  update();
+</script>
+
+</body>
+</html>
